@@ -106,7 +106,6 @@ public class TwitterSearcher
 				}
 			}
 		}
-
 		return matrix;
 	}
 
