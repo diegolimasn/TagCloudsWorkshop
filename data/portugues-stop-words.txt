@@ -336,6 +336,8 @@ um
 uma
 umas
 uns
+vá
+vão
 vendo
 ver
 vez
@@ -345,3 +347,4 @@ você
 vocês
 vos
 vós
+vou
