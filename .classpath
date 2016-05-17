@@ -12,6 +12,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/lucene-analyzers-common-5.5.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/lucene-core-5.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.5.jar"/>
-	<classpathentry excluding="br/ufba/matc96/lucene/Searcher.java|br/ufba/matc96/lucene/LuceneHelper.java|br/ufba/matc96/lucene/Indexer.java" kind="src" path="src"/>
+	<classpathentry excluding="br/ufba/matc96/lucene/Searcher.java|br/ufba/matc96/lucene/Indexer.java" kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

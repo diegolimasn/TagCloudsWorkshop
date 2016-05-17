@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
 
 import javax.swing.JFrame;
@@ -25,6 +24,7 @@ import edu.ucla.sspace.matrix.Matrix;
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
 
+import br.ufba.matc96.lucene.LuceneHelper;
 import javafx.util.Pair;
 import twitter4j.TwitterException;
 
@@ -40,7 +40,7 @@ public class TagCloudGenerator
 		{
 			e1.printStackTrace();
 		}
-		TwitterHelper luceneHelper = new TwitterHelper();
+		LuceneHelper luceneHelper = new LuceneHelper();
 		HashMap<String, Tag> tags = null;
 		SymmetricTagMatrix coMatrix = null;
 
@@ -62,28 +62,48 @@ public class TagCloudGenerator
 			e.printStackTrace();
 		}
 
-		SymmetricTagMatrix affinityMatrix = getAffinityMatrix(coMatrix,tags);
-		Matrix m = affinityMatrix.toMatrix();
-
-		CKVWSpectralClustering06 clusterer = new CKVWSpectralClustering06();
-		Assignments a = clusterer.cluster(m, 10, new Properties());
-		Assignment[] assignments = a.assignments();
-		HashMap<String,ArrayList<Tag>> clusters = new HashMap<String,ArrayList<Tag>>();
-		for (int i = 0; i < assignments.length; ++i)
-        {
-			if(!clusters.containsKey(Arrays.toString(assignments[i].assignments())))
-			{
-				clusters.put(Arrays.toString(assignments[i].assignments()), new ArrayList<Tag>());
-			}
-			clusters.get(Arrays.toString(assignments[i].assignments())).add(tags.get(affinityMatrix.getTags().get(i)));
-        }
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                initUI(clusters);
-            }
-        });
+		//if(args[0].equals("0")){
+		if(true){
+			SymmetricTagMatrix affinityMatrix = getAffinityMatrix(coMatrix,tags);
+			Matrix m = affinityMatrix.toMatrix();
+	
+			CKVWSpectralClustering06 clusterer = new CKVWSpectralClustering06();
+			Assignments a = clusterer.cluster(m, 10, new Properties());
+			Assignment[] assignments = a.assignments();
+			HashMap<String,ArrayList<Tag>> clusters = new HashMap<String,ArrayList<Tag>>();
+			for (int i = 0; i < assignments.length; ++i)
+	        {
+				if(!clusters.containsKey(Arrays.toString(assignments[i].assignments())))
+				{
+					clusters.put(Arrays.toString(assignments[i].assignments()), new ArrayList<Tag>());
+				}
+				clusters.get(Arrays.toString(assignments[i].assignments())).add(tags.get(affinityMatrix.getTags().get(i)));
+	        }
+	
+	        SwingUtilities.invokeLater(new Runnable() {
+	            @Override
+	            public void run() {
+	                initUI(clusters);
+	            }
+	        });
+		}
+		else
+		{
+            
+            HashMap<String,ArrayList<Tag>> cluster = new HashMap<>();
+            ArrayList<Tag> onlyTags = new ArrayList<>();
+            for(String s : tags.keySet()) onlyTags.add(tags.get(s));
+            
+            Collections.sort(onlyTags,(Tag t1, Tag t2) -> Long.compare(t1.getTermFrequency(), t2.getTermFrequency()));
+            Collections.reverse(onlyTags);
+            
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    initUI(onlyTags);
+                }
+            });
+		}
 	}
 	
 	private static SymmetricTagMatrix getAffinityMatrix(SymmetricTagMatrix coMatrix, HashMap<String, Tag> tags)
@@ -133,4 +153,24 @@ public class TagCloudGenerator
         frame.setSize(800, 600);
         frame.setVisible(true);
     }
+    
+	protected static void initUI(ArrayList<Tag> tags){
+	    JFrame frame = new JFrame("Tag Cloud Workshop");
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    JPanel panel = new JPanel();
+	    
+	    int i = 0;
+	    for(Tag tag: tags){
+	        if(i < 100){
+	            final JLabel label = new JLabel(tag.getTagName());
+	        label.setOpaque(false);
+	        label.setFont(label.getFont().deriveFont((float)Math.log(tag.getTermFrequency())*5));
+	        panel.add(label);
+	        i++;
+	        }else break;
+	    }
+	    frame.add(panel);
+	    frame.setSize(800, 600);
+	    frame.setVisible(true);
+	}
 }

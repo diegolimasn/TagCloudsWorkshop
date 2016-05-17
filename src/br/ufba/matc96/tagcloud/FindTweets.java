@@ -13,7 +13,7 @@ import twitter4j.auth.AccessToken;
  * @author felipe
  */
 public class FindTweets {
-    private ArrayList<String> texts;
+    private List<String> texts;
     private final static String CONSUMER_KEY = "uNsb6FQluNPkKSj6ENJS2q7XS";
     private final static String CONSUMER_KEY_SECRET = "ZKf2sPcUsD7TAI8tz69iKgVGGP5vsWYtR1wi63zvstaIfYjjps";
     private final static String ACCESS_TOKEN = "15971498-SKuEW1ITeYVtRP6kBU6i4ZPiiBbBCYOmy4s6UUYox";
@@ -43,7 +43,7 @@ public class FindTweets {
         }
     }
 
-    public ArrayList<String> getTexts() {
+    public List<String> getTexts() {
         return texts;
     }
     
