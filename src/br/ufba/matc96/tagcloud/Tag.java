@@ -1,13 +1,14 @@
 package br.ufba.matc96.tagcloud;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Tag
 {
 	private String tagName;
 	private Integer termFrequency;
 	private Integer documentFrequency;
-    private ArrayList<String> docs;
+    private List<String> docs;
 	
 	public Tag()
 	{
@@ -19,8 +20,8 @@ public class Tag
     public Tag(String tagName, Integer termFrequency) {
         this.tagName = tagName;
         this.termFrequency = termFrequency;
-        this.docs = new ArrayList<>();
         this.documentFrequency = 0;
+        this.docs = new ArrayList<String>();
     }
 	
 	public Tag(String tagName, Integer termFrequency, Integer documentFrequency)
@@ -60,11 +61,11 @@ public class Tag
 		this.documentFrequency = documentFrequency;
 	}
     
-    public ArrayList<String> getDocs() {
+    public List<String> getDocs() {
         return docs;
     }
 
-    public void setDocs(ArrayList<String> docs) {
+    public void setDocs(List<String> docs) {
         this.docs = docs;
     }
     

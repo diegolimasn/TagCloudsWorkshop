@@ -66,7 +66,8 @@ public class LuceneSearcher
 			String tagName = termEnum.term().utf8ToString();
 			Tag tag = new Tag(tagName, (int)(termEnum.totalTermFreq()));
 			tags.put(tagName,tag);
-			ArrayList<String> docs = new ArrayList<>();
+			
+			List<String> docs = new ArrayList<>();
 			Query q = queryParser.parse(tagName);
 	        TopDocs result = indexSearcher.search(q, 100);
 	        

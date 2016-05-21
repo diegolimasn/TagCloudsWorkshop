@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -25,7 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import br.ufba.matc96.lucene.LuceneHelper;
-import javafx.util.Pair;
+import br.ufba.matc96.tagcloud.util.Pair;
 import twitter4j.TwitterException;
 
 public class TagCloudGenerator
@@ -57,7 +58,8 @@ public class TagCloudGenerator
 		catch (ParseException e)
 		{
 			e.printStackTrace();
-		} catch (TwitterException e)
+		}
+		catch (TwitterException e)
 		{
 			e.printStackTrace();
 		}
@@ -79,28 +81,35 @@ public class TagCloudGenerator
 				}
 				clusters.get(Arrays.toString(assignments[i].assignments())).add(tags.get(affinityMatrix.getTags().get(i)));
 	        }
-	
+			final HashMap<String,ArrayList<Tag>> clusters2 = clusters;
 	        SwingUtilities.invokeLater(new Runnable() {
 	            @Override
 	            public void run() {
-	                initUI(clusters);
+	                initUI(clusters2);
 	            }
 	        });
 		}
 		else
 		{
-            
             HashMap<String,ArrayList<Tag>> cluster = new HashMap<>();
             ArrayList<Tag> onlyTags = new ArrayList<>();
             for(String s : tags.keySet()) onlyTags.add(tags.get(s));
             
-            Collections.sort(onlyTags,(Tag t1, Tag t2) -> Long.compare(t1.getTermFrequency(), t2.getTermFrequency()));
+            Collections.sort(onlyTags, new Comparator<Tag>(){
+				@Override
+				public int compare(Tag o1, Tag o2)
+				{
+					return Long.compare(o1.getTermFrequency(), o2.getTermFrequency());
+				}
+            });
+            //(Tag t1, Tag t2) -> Long.compare(t1.getTermFrequency(), t2.getTermFrequency()));
             Collections.reverse(onlyTags);
             
+            final ArrayList<Tag> onlyTags2 = onlyTags;
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    initUI(onlyTags);
+                    initUI(onlyTags2);
                 }
             });
 		}
@@ -113,8 +122,8 @@ public class TagCloudGenerator
 		{
 			if(entry.getValue() > 2)
 			{
-				String tag1 = entry.getKey().getKey();
-				String tag2 = entry.getKey().getValue();
+				String tag1 = entry.getKey().getFirst();
+				String tag2 = entry.getKey().getSecond();
 				Float similarity = (float) ((2*(entry.getValue()))
 						/Math.sqrt(tags.get(tag1).getTermFrequency()*tags.get(tag2).getTermFrequency()));
 				affinityMatrix.setValue(tag1, tag2, similarity);
@@ -129,8 +138,16 @@ public class TagCloudGenerator
         JPanel panel = new JPanel();
         
         for (Entry<String, ArrayList<Tag>> c : clusters.entrySet()) {
-        	Collections.sort(c.getValue(), (Tag t1, Tag t2) -> Long.compare(t1.getTermFrequency(), t2.getTermFrequency()));
+        	//Collections.sort(c.getValue(), (Tag t1, Tag t2) -> Long.compare(t1.getTermFrequency(), t2.getTermFrequency()));
+        	Collections.sort(c.getValue(), new Comparator<Tag>(){
+				@Override
+				public int compare(Tag o1, Tag o2)
+				{
+					return Long.compare(o1.getTermFrequency(), o2.getTermFrequency());
+				}
+            });
             Collections.reverse(c.getValue());
+            
         	int i = 0;
         	for(Tag tag: c.getValue())
         	{

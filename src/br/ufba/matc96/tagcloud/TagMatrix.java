@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import br.ufba.matc96.tagcloud.util.Pair;
 import edu.ucla.sspace.matrix.ArrayMatrix;
 import edu.ucla.sspace.matrix.Matrix;
-import javafx.util.Pair;
 
 public class TagMatrix
 {

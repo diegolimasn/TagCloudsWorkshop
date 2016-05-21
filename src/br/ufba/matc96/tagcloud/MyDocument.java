@@ -14,31 +14,37 @@ public class MyDocument {
     private String url;
     private String content;
 
-    public MyDocument(String name, String url, String content) {
+    public MyDocument(String name, String url, String content)
+    {
         this.name = name;
         this.url = name;
         this.content = content;
     }
 
-    public MyDocument(String name, String content) {
+    public MyDocument(String name, String content)
+    {
         this.name = name;
         this.url = name;
         this.content = content;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public String getContent() {
+    public String getContent()
+    {
         return content;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(String url)
+    {
         this.url = url;
     }
 
-    public String getUrl() {
+    public String getUrl()
+    {
         return url;
     }
 }

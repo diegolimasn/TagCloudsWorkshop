@@ -68,7 +68,8 @@ public class LuceneHelper
 		ArrayList<String> docs = new ArrayList<String>();
 		TopDocs result = searcher.search(query);
 
-        for (ScoreDoc sd : result.scoreDocs){
+        for (ScoreDoc sd : result.scoreDocs)
+        {
             Document Doc = searcher.getDocument(sd);
             docs.add(Doc.get(LuceneConstants.FILE_NAME));
         }

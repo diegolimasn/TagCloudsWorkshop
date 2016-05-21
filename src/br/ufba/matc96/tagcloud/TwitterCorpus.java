@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.ufba.matc96.lucene.CustomFileFilter;
+import br.ufba.matc96.lucene.LuceneFileFilter;
 import twitter4j.TwitterException;
 
 /**
@@ -24,7 +24,7 @@ public class TwitterCorpus {
     
     public TwitterCorpus(){
         File directory = new File("corpus");
-        this.documents = directory.listFiles(new CustomFileFilter());
+        this.documents = directory.listFiles(new LuceneFileFilter());
     }
 
     public File[] getDocuments() {
@@ -49,10 +49,7 @@ public class TwitterCorpus {
             tweet.setUrl(url);
             tweets.add(tweet);
             count++;
-            //System.out.println(tweet.getContent());
-            
         }
-        //System.out.println();
         return tweets;
     }
     

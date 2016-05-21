@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javafx.util.Pair;
+import br.ufba.matc96.tagcloud.util.Pair;
 
 public class SymmetricTagMatrix extends TagMatrix
 {
