@@ -65,7 +65,6 @@ public class LuceneSearcher
 		{
 			String tagName = termEnum.term().utf8ToString();
 			Tag tag = new Tag(tagName, (int)(termEnum.totalTermFreq()));
-			tags.put(tagName,tag);
 			
 			List<String> docs = new ArrayList<>();
 			Query q = queryParser.parse(tagName);
@@ -73,9 +72,10 @@ public class LuceneSearcher
 	        
 	        for (ScoreDoc sd : result.scoreDocs){
 	            Document Doc = indexSearcher.doc(sd.doc);
-	            docs.add(Doc.get("title"));
+	            docs.add(Doc.get(LuceneConstants.FILE_NAME));
 	        }
 	        tag.setDocs(docs);
+			tags.put(tagName,tag);
 		}
 		return tags;
 	}

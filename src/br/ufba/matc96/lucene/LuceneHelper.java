@@ -23,7 +23,7 @@ public class LuceneHelper
 	public LuceneHelper()
 	{
 		this.indexDir = "index/";
-		this.twitterHandle = "veja";
+		this.twitterHandle = "";
 		try
 		{
 			//searcher = new Searcher(this.indexDir);
