@@ -16,6 +16,7 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -35,6 +36,8 @@ public class LuceneIndexer
 		//Opens directory to store index
 		Directory directory = FSDirectory.open(new File(indexDirectoryPath).toPath());
 		IndexWriterConfig config = new IndexWriterConfig(analyzer);
+		// Clears index folder before indexing
+		config.setOpenMode(OpenMode.CREATE);
 		writer = new IndexWriter(directory, config);
 	}
 	
@@ -91,9 +94,9 @@ public class LuceneIndexer
 		fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
 		Field contentField = new Field(LuceneConstants.CONTENTS, file.getContent(), fieldType);
 
-		document.add(contentField);
 		document.add(fileNameField);
 		document.add(filePathField);
+		document.add(contentField);
 
 		return document;
 	}
@@ -131,23 +134,21 @@ public class LuceneIndexer
 	{
 		Document document = new Document();
 		
+		//index file name
+		Field fileNameField = new StoredField(LuceneConstants.FILE_NAME, file.getName());
+		//index file path
+		Field filePathField = new StoredField(LuceneConstants.FILE_PATH, file.getCanonicalPath());
 		//index file contents
 		FieldType fieldType = new FieldType();
 		fieldType.setStored(false);
 		fieldType.setStoreTermVectors(true);
 		fieldType.setTokenized(true);
 		fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
-		
-		//index file contents
 		Field contentField = new Field(LuceneConstants.CONTENTS, new FileReader(file), fieldType);
-		//index file name
-		Field fileNameField = new StoredField(LuceneConstants.FILE_NAME, file.getName());
-		//index file path
-		Field filePathField = new StoredField(LuceneConstants.FILE_PATH, file.getCanonicalPath());
 
-		document.add(contentField);
 		document.add(fileNameField);
 		document.add(filePathField);
+		document.add(contentField);
 
 		return document;
 	}

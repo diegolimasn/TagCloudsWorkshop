@@ -11,17 +11,18 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
 import br.ufba.matc96.tagcloud.Corpus;
-import br.ufba.matc96.tagcloud.SymmetricTagMatrix;
 import br.ufba.matc96.tagcloud.Tag;
+import br.ufba.matc96.tagcloud.TagDocument;
+import br.ufba.matc96.tagcloud.util.SymmetricTagMatrix;
 import twitter4j.TwitterException;
 
-public class LuceneHelper
+public class LuceneController
 {
 	String indexDir;
 	LuceneIndexer indexer;
 	LuceneSearcher searcher;
 	
-	public LuceneHelper()
+	public LuceneController()
 	{
 		this.indexDir = "index/";
 		try
@@ -35,7 +36,7 @@ public class LuceneHelper
 		}
 	}
 	
-	public LuceneHelper(String indexDir)
+	public LuceneController(String indexDir)
 	{
 		this.indexDir = indexDir;
 		try
@@ -88,6 +89,11 @@ public class LuceneHelper
 	public HashMap<String, Tag> getTags() throws IOException, ParseException
 	{
 		return this.searcher.getTags();
+	}
+	
+	public List<TagDocument> getTagDocuments() throws IOException, ParseException
+	{
+		return this.searcher.getTagDocuments();
 	}
 	
 	public SymmetricTagMatrix getCooccurrenceMatrix() throws IOException, ParseException

@@ -26,33 +26,37 @@ import edu.ucla.sspace.matrix.Matrix;
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
 
-import br.ufba.matc96.lucene.LuceneHelper;
+import br.ufba.matc96.lucene.LuceneController;
 import br.ufba.matc96.tagcloud.util.Pair;
+import br.ufba.matc96.tagcloud.util.SymmetricTagMatrix;
 import twitter4j.TwitterException;
 
 public class TagCloudGenerator
 {
 	public static void main(String[] args)
 	{
-		try
+		/*try
 		{
 			FileUtils.cleanDirectory(new File("index/"));
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-		}
-		LuceneHelper luceneHelper = new LuceneHelper();
+		}*/
+		LuceneController luceneController = new LuceneController();
 		HashMap<String, Tag> tags = null;
+		List<TagDocument> docs = null;
 		SymmetricTagMatrix coMatrix = null;
 
 		try
 		{
-			//Corpus<?> corpus = new TweetCorpus("bbcbrasil");
-			Corpus<?> corpus = new TextFileCorpus("test_data");
-			luceneHelper.createIndex(corpus);
-			tags = luceneHelper.getTags();
-			coMatrix = luceneHelper.getCooccurrenceMatrix();
+			Corpus<?> corpus = new TweetCorpus("bbcbrasil");
+			//Corpus<?> corpus = new TextFileCorpus("test_data");
+			luceneController.createIndex(corpus);
+			tags = luceneController.getTags();
+			docs = luceneController.getTagDocuments();
+			//coMatrix = luceneController.getCooccurrenceMatrix();
+			coMatrix = Tag.getCooccurrenceMatrix(docs);
 		}
 		catch (IOException e)
 		{
@@ -98,7 +102,7 @@ public class TagCloudGenerator
 	            	List<Tag> myTagCloud = initUI(clusters2);
                     double cov = calcCov(myTagCloud, onlyTags);
                     System.out.println("Coverage = " + cov);
-                    double over = calcOverlap(myTagCloud, 3203);
+                    double over = calcOverlap(myTagCloud, onlyTags.size());
                     System.out.println("Overlap = " + over);
                     double rel = calcRelevance(myTagCloud, onlyTags);
                     System.out.println("Relevance = " + rel);
@@ -126,7 +130,7 @@ public class TagCloudGenerator
                     List<Tag> myTagCloud = initUI(onlyTags2);
                     double cov = calcCov(myTagCloud, onlyTags2);
                     System.out.println("Coverage = " + cov);
-                    double over = calcOverlap(myTagCloud, 3203);
+                    double over = calcOverlap(myTagCloud, onlyTags2.size());
                     System.out.println("Overlap = " + over);
                     double rel = calcRelevance(myTagCloud, onlyTags2);
                     System.out.println("Relevance = " + rel);

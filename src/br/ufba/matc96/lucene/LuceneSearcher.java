@@ -27,8 +27,9 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import br.ufba.matc96.tagcloud.SymmetricTagMatrix;
 import br.ufba.matc96.tagcloud.Tag;
+import br.ufba.matc96.tagcloud.TagDocument;
+import br.ufba.matc96.tagcloud.util.SymmetricTagMatrix;
 
 public class LuceneSearcher
 {
@@ -113,6 +114,33 @@ public class LuceneSearcher
 			}
 		}
 		return matrix;
+	}
+	
+	public List<TagDocument> getTagDocuments() throws IOException
+	{
+		List<TagDocument> docs = new ArrayList<TagDocument>();
+		
+		for (int i=0; i<reader.maxDoc(); i++)
+		{
+			Document doc = reader.document(i);
+		    if (doc == null)
+		        continue;
+		    
+		    Terms terms = reader.getTermVector(i, LuceneConstants.CONTENTS);
+		    if (terms == null)
+		    	continue;
+
+		    TermsEnum termEnum = terms.iterator();
+		    TagDocument tagDoc = new TagDocument();
+
+			while(termEnum.next() != null)
+			{
+				tagDoc.addTag(termEnum.term().utf8ToString());
+			}
+			docs.add(tagDoc);
+		}
+		
+		return docs;
 	}
 
 	public List<Tag> getIndex() throws IOException
