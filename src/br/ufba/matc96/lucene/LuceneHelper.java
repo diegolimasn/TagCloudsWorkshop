@@ -3,12 +3,14 @@ package br.ufba.matc96.lucene;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
+import br.ufba.matc96.tagcloud.Corpus;
 import br.ufba.matc96.tagcloud.SymmetricTagMatrix;
 import br.ufba.matc96.tagcloud.Tag;
 import twitter4j.TwitterException;
@@ -16,18 +18,16 @@ import twitter4j.TwitterException;
 public class LuceneHelper
 {
 	String indexDir;
-	String twitterHandle;
 	LuceneIndexer indexer;
 	LuceneSearcher searcher;
 	
 	public LuceneHelper()
 	{
 		this.indexDir = "index/";
-		this.twitterHandle = "";
 		try
 		{
-			//searcher = new Searcher(this.indexDir);
 			indexer = new LuceneIndexer(this.indexDir);
+			searcher = null;
 		}
 		catch (IOException e)
 		{
@@ -35,14 +35,13 @@ public class LuceneHelper
 		}
 	}
 	
-	public LuceneHelper(String indexDir, String twitterHandle)
+	public LuceneHelper(String indexDir)
 	{
 		this.indexDir = indexDir;
-		this.twitterHandle = twitterHandle;
 		try
 		{
-			//searcher = new Searcher(this.indexDir);
 			indexer = new LuceneIndexer(this.indexDir);
+			searcher = null;
 		}
 		catch (IOException e)
 		{
@@ -50,22 +49,26 @@ public class LuceneHelper
 		}
 	}
 
-	public void createIndex() throws IOException, TwitterException
+	public void createIndex(Corpus<?> corpus) throws IOException, TwitterException
 	{
 		int numIndexed;
 		long startTime = System.currentTimeMillis();
-		numIndexed = indexer.createIndex(this.indexDir);
+		numIndexed = indexer.createIndex(corpus);
 		long endTime = System.currentTimeMillis();
 		indexer.close();
-		System.out.println(numIndexed+" File indexed, time taken: "
-				+(endTime-startTime)+" ms");
+		//Sets up searcher
 		searcher = new LuceneSearcher(this.indexDir);
+
+		System.out.println(numIndexed+" file(s) indexed, time taken: "
+				+(endTime-startTime)+" ms");
 	}
 	
-	public ArrayList<String> search(String query) throws IOException, ParseException
+	public List<String> search(String query) throws IOException, ParseException
 	{
-		searcher = new LuceneSearcher(this.indexDir);
-		ArrayList<String> docs = new ArrayList<String>();
+		if(searcher == null)
+			searcher = new LuceneSearcher(this.indexDir);
+
+		List<String> docs = new ArrayList<String>();
 		TopDocs result = searcher.search(query);
 
         for (ScoreDoc sd : result.scoreDocs)
@@ -75,12 +78,6 @@ public class LuceneHelper
         }
 
 		return docs;
-	}
-	
-	public Integer searchHits(String query) throws IOException, ParseException
-	{
-		TopDocs result = searcher.search(query);
-		return result.totalHits;
 	}
 	
 	public void printIndex() throws IOException, ParseException

@@ -10,5 +10,4 @@ public class LuceneFileFilter implements FileFilter
 	{
 		return pathname.getName().toLowerCase().endsWith(LuceneConstants.FILE_EXTENSION);
 	}
-
 }

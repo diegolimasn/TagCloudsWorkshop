@@ -26,7 +26,6 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.BytesRef;
 
 import br.ufba.matc96.tagcloud.SymmetricTagMatrix;
 import br.ufba.matc96.tagcloud.Tag;
@@ -40,11 +39,14 @@ public class LuceneSearcher
 
 	public LuceneSearcher(String indexDirectoryPath) throws IOException
 	{
+		//Opens directory where index is stored
 		Directory indexDirectory = FSDirectory.open(new File(indexDirectoryPath).toPath());
 		reader = DirectoryReader.open(indexDirectory);
 		indexSearcher = new IndexSearcher(reader);
-		Reader fReader = new FileReader(new File(LuceneConstants.STOP_WORDS_FILE));
-		queryParser = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer(fReader));
+
+		//Creates reader for stop words file
+		Reader stopWordsReader = new FileReader(new File(LuceneConstants.STOP_WORDS_FILE));
+		queryParser = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer(stopWordsReader));
 	}
 
 	public TopDocs search(String searchQuery) 
@@ -60,8 +62,7 @@ public class LuceneSearcher
 		Terms terms = MultiFields.getTerms(reader, LuceneConstants.CONTENTS);
 		TermsEnum termEnum = terms.iterator();
 		
-		BytesRef bytesRef;
-		while((bytesRef = termEnum.next()) != null)
+		while(termEnum.next() != null)
 		{
 			String tagName = termEnum.term().utf8ToString();
 			Tag tag = new Tag(tagName, (int)(termEnum.totalTermFreq()));
@@ -90,11 +91,13 @@ public class LuceneSearcher
 		        continue;
 		    
 		    Terms terms = reader.getTermVector(i, LuceneConstants.CONTENTS);
+		    if (terms == null)
+		    	continue;
+
 		    TermsEnum termEnum = terms.iterator();
 		    List<String> tags = new LinkedList<String>();
 
-			BytesRef bytesRef;
-			while((bytesRef = termEnum.next()) != null)
+			while(termEnum.next() != null)
 			{
 				tags.add(termEnum.term().utf8ToString());
 			}
@@ -118,12 +121,10 @@ public class LuceneSearcher
 		Terms terms = MultiFields.getTerms(reader, LuceneConstants.CONTENTS);
 		TermsEnum termEnum = terms.iterator();
 		
-		BytesRef bytesRef;
-		while((bytesRef = termEnum.next()) != null)
+		while(termEnum.next() != null)
 		{
 			tags.add(new Tag(termEnum.term().utf8ToString(),
-					(int)(termEnum.totalTermFreq()))
-					);
+					(int)(termEnum.totalTermFreq())));
 		}
 		for(Tag t: tags)
 		{

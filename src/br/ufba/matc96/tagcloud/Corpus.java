@@ -1,9 +1,6 @@
 package br.ufba.matc96.tagcloud;
 
-import java.util.List;
-
-public abstract class Corpus
+public interface Corpus<F>
 {
-	public abstract List<Tag> getTags();
-	public abstract List<TagDocument> getTagDocuments();
+	public abstract F[] getFiles();
 }
