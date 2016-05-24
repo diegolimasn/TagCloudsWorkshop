@@ -33,24 +33,24 @@ public class TagCloudMain
 		System.out.printf("%12s | %12s | %12s | %12s\n", "Método", "Cobertura", "Overlap", "Relevância");
 		printMetrics("Spec. Clust.", SCAnalyzer);
 		printMetrics("Popularidade", PAnalyzer);
-		displayTagCloud(SCTagCloud);
-		displayTagCloud(PTagCloud);
+		displayTagCloud(SCTagCloud, "Spectral Clustering");
+		displayTagCloud(PTagCloud, "Popularidade");
 	}
 	
-	protected static void displayTagCloud(final TagCloud tagCloud)
+	protected static void displayTagCloud(final TagCloud tagCloud, final String title)
 	{
 		SwingUtilities.invokeLater(new Runnable()
 		{
             @Override
             public void run() {
-            	initUI(tagCloud.getClusters());
+            	initUI(tagCloud.getClusters(), title);
             }
         });
 	}
 	
-	protected static void initUI(Map<String, List<MyTag>> clusters)
+	protected static void initUI(Map<String, List<MyTag>> clusters, String title)
 	{
-        JFrame frame = new JFrame("Tag Cloud Workshop");
+        JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel();
         
