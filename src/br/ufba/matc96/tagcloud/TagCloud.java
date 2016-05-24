@@ -8,41 +8,41 @@ import java.util.Map;
 
 public class TagCloud
 {
-	private Map<String, List<Tag>> clusters;
+	private Map<String, List<MyTag>> clusters;
 	
 	public TagCloud()
 	{
-		this.clusters = new HashMap<String, List<Tag>>();
+		this.clusters = new HashMap<String, List<MyTag>>();
 	}
 
-	public TagCloud(List<Tag> tags)
+	public TagCloud(List<MyTag> tags)
 	{
-		this.clusters = new HashMap<String, List<Tag>>();
+		this.clusters = new HashMap<String, List<MyTag>>();
 		this.clusters.put("1", tags);
 	}
 	
-	public TagCloud(Map<String, List<Tag>> clusters)
+	public TagCloud(Map<String, List<MyTag>> clusters)
 	{
 		this.clusters = clusters;
 	}
 	
-	public Map<String, List<Tag>> getClusters()
+	public Map<String, List<MyTag>> getClusters()
 	{
 		return this.clusters;
 	}
 	
-	public void setClusters(Map<String, List<Tag>> clusters)
+	public void setClusters(Map<String, List<MyTag>> clusters)
 	{
 		this.clusters = clusters;
 	}
 	
-	public List<Tag> getAllTags()
+	public List<MyTag> getAllTags()
 	{
-		List<Tag> tags = new LinkedList<Tag>();
+		List<MyTag> tags = new LinkedList<MyTag>();
 		
-		for(List<Tag> values: clusters.values())
+		for(List<MyTag> values: clusters.values())
 		{
-			for(Tag tag: values)
+			for(MyTag tag: values)
 			{
 				tags.add(tag);
 			}
@@ -50,17 +50,17 @@ public class TagCloud
 		return tags;
 	}
 	
-	public void addTagToCluster(String key, Tag tag)
+	public void addTagToCluster(String key, MyTag tag)
 	{
 		if(!this.clusters.containsKey(key))
-			this.clusters.put(key, new ArrayList<Tag>());
+			this.clusters.put(key, new ArrayList<MyTag>());
 		this.clusters.get(key).add(tag);
 	}
 	
 	public List<String> getDocs()
 	{
         List<String> docstag = new ArrayList<>();
-        for(Tag tag: this.getAllTags())
+        for(MyTag tag: this.getAllTags())
         {
             for(String doc: tag.getDocs())
             {

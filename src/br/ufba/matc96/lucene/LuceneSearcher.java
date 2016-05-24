@@ -26,8 +26,8 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import br.ufba.matc96.tagcloud.Tag;
-import br.ufba.matc96.tagcloud.TagDocument;
+import br.ufba.matc96.tagcloud.MyTag;
+import br.ufba.matc96.tagcloud.MyTagDocument;
 
 public class LuceneSearcher
 {
@@ -55,16 +55,16 @@ public class LuceneSearcher
 		return indexSearcher.search(query, LuceneConstants.MAX_SEARCH, Sort.RELEVANCE, true, false);
 	}
 	
-	public HashMap<String, Tag> getTags() throws IOException, ParseException
+	public HashMap<String, MyTag> getTags() throws IOException, ParseException
 	{
-		HashMap<String, Tag> tags = new HashMap<String, Tag>();
+		HashMap<String, MyTag> tags = new HashMap<String, MyTag>();
 		Terms terms = MultiFields.getTerms(reader, LuceneConstants.CONTENTS);
 		TermsEnum termEnum = terms.iterator();
 		
 		while(termEnum.next() != null)
 		{
 			String tagName = termEnum.term().utf8ToString();
-			Tag tag = new Tag(tagName, (int)(termEnum.totalTermFreq()));
+			MyTag tag = new MyTag(tagName, (int)(termEnum.totalTermFreq()));
 			
 			List<String> docs = new ArrayList<>();
 			Query q = queryParser.parse(tagName);
@@ -80,9 +80,9 @@ public class LuceneSearcher
 		return tags;
 	}
 	
-	public List<TagDocument> getTagDocuments() throws IOException
+	public List<MyTagDocument> getTagDocuments() throws IOException
 	{
-		List<TagDocument> docs = new ArrayList<TagDocument>();
+		List<MyTagDocument> docs = new ArrayList<MyTagDocument>();
 		
 		for (int i=0; i<reader.maxDoc(); i++)
 		{
@@ -95,7 +95,7 @@ public class LuceneSearcher
 		    	continue;
 
 		    TermsEnum termEnum = terms.iterator();
-		    TagDocument tagDoc = new TagDocument();
+		    MyTagDocument tagDoc = new MyTagDocument();
 
 			while(termEnum.next() != null)
 			{
@@ -107,18 +107,18 @@ public class LuceneSearcher
 		return docs;
 	}
 
-	public List<Tag> getIndex() throws IOException
+	public List<MyTag> getIndex() throws IOException
 	{
-		List<Tag> tags = new ArrayList<Tag>();
+		List<MyTag> tags = new ArrayList<MyTag>();
 		Terms terms = MultiFields.getTerms(reader, LuceneConstants.CONTENTS);
 		TermsEnum termEnum = terms.iterator();
 		
 		while(termEnum.next() != null)
 		{
-			tags.add(new Tag(termEnum.term().utf8ToString(),
+			tags.add(new MyTag(termEnum.term().utf8ToString(),
 					(int)(termEnum.totalTermFreq())));
 		}
-		for(Tag t: tags)
+		for(MyTag t: tags)
 		{
 			System.out.println(t.toString());
 		}

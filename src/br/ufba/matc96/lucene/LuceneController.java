@@ -10,8 +10,8 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
-import br.ufba.matc96.tagcloud.Tag;
-import br.ufba.matc96.tagcloud.TagDocument;
+import br.ufba.matc96.tagcloud.MyTag;
+import br.ufba.matc96.tagcloud.MyTagDocument;
 
 public class LuceneController
 {
@@ -83,12 +83,12 @@ public class LuceneController
 		searcher.getIndex();
 	}
 	
-	public HashMap<String, Tag> getTags() throws IOException, ParseException
+	public HashMap<String, MyTag> getTags() throws IOException, ParseException
 	{
 		return this.searcher.getTags();
 	}
 	
-	public List<TagDocument> getTagDocuments() throws IOException, ParseException
+	public List<MyTagDocument> getTagDocuments() throws IOException, ParseException
 	{
 		return this.searcher.getTagDocuments();
 	}

@@ -19,11 +19,11 @@ public class PopularityTagCloudCreator implements TagCloudCreator
 	@Override
 	public TagCloud create()
 	{
-		List<Tag> tags = new ArrayList<Tag>(corpus.getTags().values());
+		List<MyTag> tags = new ArrayList<MyTag>(corpus.getTags().values());
 
-        Collections.sort(tags, new Comparator<Tag>(){
+        Collections.sort(tags, new Comparator<MyTag>(){
 			@Override
-			public int compare(Tag o1, Tag o2)
+			public int compare(MyTag o1, MyTag o2)
 			{
 				return Long.compare(o1.getTermFrequency(), o2.getTermFrequency());
 			}

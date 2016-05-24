@@ -5,19 +5,20 @@ import java.util.List;
 
 import br.ufba.matc96.tagcloud.util.SymmetricTagMatrix;
 
-public class Tag
+public class MyTag
 {
 	private String tagName;
 	private Integer termFrequency;
     private List<String> docs;
 	
-	public Tag()
+	public MyTag()
 	{
 		this.tagName = "";
 		this.termFrequency = 0;
+        this.docs = new ArrayList<String>();
 	}
     
-    public Tag(String tagName, Integer termFrequency) {
+    public MyTag(String tagName, Integer termFrequency) {
         this.tagName = tagName;
         this.termFrequency = termFrequency;
         this.docs = new ArrayList<String>();
@@ -42,11 +43,6 @@ public class Tag
 	{
 		this.termFrequency = termFrequency;
 	}
-	
-	public Integer getDocumentFrequency()
-	{
-		return this.docs.size();
-	}
     
     public List<String> getDocs() {
         return docs;
@@ -63,11 +59,11 @@ public class Tag
 	@Override
 	public String toString()
 	{
-		return "Tag: "+this.tagName+" TF: "+this.termFrequency+" DF: "+this.docs.size();
+		return "Tag: "+this.tagName+" TF: "+this.termFrequency;
 	}
 
     // Calculates cooccurrence of two tags 
-    public static int calculateCooccurrence(Tag i, Tag j){
+    public static int calculateCooccurrence(MyTag i, MyTag j){
         int total = 0;
         List<String> docsI, docsJ;
         docsI = i.getDocs();
@@ -84,11 +80,11 @@ public class Tag
         return total;
     }
     
-    public static SymmetricTagMatrix getCooccurrenceMatrix(List<TagDocument> docs)
+    public static SymmetricTagMatrix getCooccurrenceMatrix(List<MyTagDocument> docs)
     {
     	SymmetricTagMatrix matrix = new SymmetricTagMatrix();
 
-    	for (TagDocument doc: docs)
+    	for (MyTagDocument doc: docs)
 		{		    
 			for(int j = 0; j < doc.getTags().size(); j++)
 			{

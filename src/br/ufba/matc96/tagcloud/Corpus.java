@@ -1,10 +1,10 @@
 package br.ufba.matc96.tagcloud;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 public interface Corpus
 {
-	public List<TagDocument> getTagDocuments();
-	public HashMap<String, Tag> getTags();
+	public List<MyTagDocument> getTagDocuments();
+	public Map<String, MyTag> getTags();
 }

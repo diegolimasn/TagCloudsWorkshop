@@ -3,11 +3,11 @@ package br.ufba.matc96.tagcloud;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagDocument
+public class MyTagDocument
 {
 	private List<String> tags;
 	
-	public TagDocument()
+	public MyTagDocument()
 	{
 		tags = new ArrayList<String>();
 	}

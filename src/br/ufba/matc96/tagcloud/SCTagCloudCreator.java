@@ -33,31 +33,31 @@ public class SCTagCloudCreator implements TagCloudCreator
 	@Override
 	public TagCloud create()
 	{
-		Map<String, Tag> tags = corpus.getTags();
-		List<TagDocument> docs = corpus.getTagDocuments();
+		Map<String, MyTag> tags = corpus.getTags();
+		List<MyTagDocument> docs = corpus.getTagDocuments();
 
-		SymmetricTagMatrix coMatrix = Tag.getCooccurrenceMatrix(docs);
+		SymmetricTagMatrix coMatrix = MyTag.getCooccurrenceMatrix(docs);
 		SymmetricTagMatrix affinityMatrix = getAffinityMatrix(coMatrix,tags);
 		Matrix m = affinityMatrix.toMatrix();
 
 		CKVWSpectralClustering06 clusterer = new CKVWSpectralClustering06();
 		Assignments a = clusterer.cluster(m, this.nClusters, new Properties());
 		Assignment[] assignments = a.assignments();
-		Map<String, List<Tag>> clusters = new HashMap<String, List<Tag>>();
+		Map<String, List<MyTag>> clusters = new HashMap<String, List<MyTag>>();
 		for (int i = 0; i < assignments.length; ++i)
         {
 			if(!clusters.containsKey(Arrays.toString(assignments[i].assignments())))
 			{
-				clusters.put(Arrays.toString(assignments[i].assignments()), new ArrayList<Tag>());
+				clusters.put(Arrays.toString(assignments[i].assignments()), new ArrayList<MyTag>());
 			}
 			clusters.get(Arrays.toString(assignments[i].assignments())).add(tags.get(affinityMatrix.getTags().get(i)));
         }
 		TagCloud tagCloud = new TagCloud();
 		
-		for (Entry<String, List<Tag>> c : clusters.entrySet()) {
-        	Collections.sort(c.getValue(), new Comparator<Tag>(){
+		for (Entry<String, List<MyTag>> c : clusters.entrySet()) {
+        	Collections.sort(c.getValue(), new Comparator<MyTag>(){
 				@Override
-				public int compare(Tag o1, Tag o2)
+				public int compare(MyTag o1, MyTag o2)
 				{
 					return Long.compare(o1.getTermFrequency(), o2.getTermFrequency());
 				}
@@ -65,7 +65,7 @@ public class SCTagCloudCreator implements TagCloudCreator
             Collections.reverse(c.getValue());
             
         	int i = 0;
-        	for(Tag tag: c.getValue())
+        	for(MyTag tag: c.getValue())
         	{
         		if(i>this.nTagsCluster)
         			break;
@@ -77,7 +77,7 @@ public class SCTagCloudCreator implements TagCloudCreator
 		return tagCloud;
 	}
 
-	private static SymmetricTagMatrix getAffinityMatrix(SymmetricTagMatrix coMatrix, Map<String, Tag> tags)
+	private static SymmetricTagMatrix getAffinityMatrix(SymmetricTagMatrix coMatrix, Map<String, MyTag> tags)
 	{
 		SymmetricTagMatrix affinityMatrix = new SymmetricTagMatrix();
 		for (Entry<Pair<String, String>, Float> entry : coMatrix.getMap().entrySet())

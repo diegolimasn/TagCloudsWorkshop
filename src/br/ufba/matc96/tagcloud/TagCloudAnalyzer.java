@@ -36,11 +36,11 @@ public class TagCloudAnalyzer
     
     public double calcOverlap()
     {
-    	List<Tag> tags = this.tagCloud.getAllTags();
+    	List<MyTag> tags = this.tagCloud.getAllTags();
         double overlap = 0.0;
-        for(Tag tag1: tags)
+        for(MyTag tag1: tags)
         {
-            for(Tag tag2: tags)
+            for(MyTag tag2: tags)
             {
                 if(tag1 != tag2)
                 {
@@ -66,13 +66,13 @@ public class TagCloudAnalyzer
     
     public double calcRelevance()
     {
-    	List<Tag> tagcloud = this.tagCloud.getAllTags();
-    	List<Tag> tags = new ArrayList<Tag>(this.corpus.getTags().values());
+    	List<MyTag> tagcloud = this.tagCloud.getAllTags();
+    	List<MyTag> tags = new ArrayList<MyTag>(this.corpus.getTags().values());
     	
         double relevance = 0.0;
-        for(Tag tag1: tagcloud)
+        for(MyTag tag1: tagcloud)
         {
-            for(Tag tag2: tags)
+            for(MyTag tag2: tags)
             {
                 //if(!tag1.equals(tag2)){
                     List<String> docs1 = tag1.getDocs();

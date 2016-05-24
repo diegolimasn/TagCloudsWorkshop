@@ -13,18 +13,29 @@ public class TagCloudMain
 {
 	public static void main(String[] args)
 	{
-		Corpus corpus = new TwitterCorpus("bbcbrasil");
+		//Corpus corpus = new TwitterCorpus("bbcbrasil");
 		//Corpus corpus = new TextFileCorpus("test_data");
-		TagCloudCreator SCCreator = new SCTagCloudCreator(corpus, 5, 20);
+		Corpus corpus = new BibsonomyCorpus("article");
+
+		//Create tag cloud using spectral clustering
+		TagCloudCreator SCCreator = new SCTagCloudCreator(corpus, 10, 5);
 		TagCloud SCTagCloud = SCCreator.create();
-		TagCloudCreator PCreator = new PopularityTagCloudCreator(corpus, 100);
+		
+		//Create tag cloud using tag popularity
+		TagCloudCreator PCreator = new PopularityTagCloudCreator(corpus, 50);
 		TagCloud PTagCloud = PCreator.create();
+
+		//Analyze tag clouds
 		TagCloudAnalyzer SCAnalyzer = new TagCloudAnalyzer(SCTagCloud, corpus);
 		TagCloudAnalyzer PAnalyzer = new TagCloudAnalyzer(PTagCloud, corpus);
+
+		//Print analysis
+		System.out.println("N TAGS: "+corpus.getTags().size()+" N DOCS: "+corpus.getTagDocuments().size());
 		System.out.printf("%12s | %12s | %12s | %12s\n", "Método", "Cobertura", "Overlap", "Relevância");
 		printMetrics("Spec. Clust.", SCAnalyzer);
 		printMetrics("Popularidade", PAnalyzer);
-		//displayTagCloud(tagCloud);
+		displayTagCloud(SCTagCloud);
+		displayTagCloud(PTagCloud);
 	}
 	
 	protected static void displayTagCloud(final TagCloud tagCloud)
@@ -38,15 +49,15 @@ public class TagCloudMain
         });
 	}
 	
-	protected static void initUI(Map<String, List<Tag>> clusters)
+	protected static void initUI(Map<String, List<MyTag>> clusters)
 	{
         JFrame frame = new JFrame("Tag Cloud Workshop");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel();
         
-        for (Entry<String, List<Tag>> c : clusters.entrySet())
+        for (Entry<String, List<MyTag>> c : clusters.entrySet())
         {
-        	for(Tag tag: c.getValue())
+        	for(MyTag tag: c.getValue())
         	{
 	            final JLabel label = new JLabel(tag.getTagName());
 	            label.setOpaque(false);
@@ -54,8 +65,8 @@ public class TagCloudMain
 	            		(float) (Math.log(tag.getTermFrequency())*5)));
 	            panel.add(label);
         	}
-            //final JLabel label = new JLabel(".");
-            //panel.add(label);
+            final JLabel label = new JLabel(".");
+            panel.add(label);
         }
         frame.add(panel);
         frame.setSize(800, 600);

@@ -2,8 +2,8 @@ package br.ufba.matc96.tagcloud;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.queryparser.classic.ParseException;
 
@@ -14,8 +14,8 @@ public class TextFileCorpus implements Corpus, LuceneFileProvider<File>
 {
 	private String fileDirectory;
 	private LuceneController luceneController;
-	private List<TagDocument> tagDocs;
-	private HashMap<String, Tag> tags;
+	private List<MyTagDocument> tagDocs;
+	private Map<String, MyTag> tags;
 	
 	public TextFileCorpus(String fileDirectory)
 	{
@@ -34,7 +34,7 @@ public class TextFileCorpus implements Corpus, LuceneFileProvider<File>
 	}
 
 	@Override
-	public List<TagDocument> getTagDocuments()
+	public List<MyTagDocument> getTagDocuments()
 	{
 		if(this.tagDocs == null)
 		{
@@ -51,7 +51,7 @@ public class TextFileCorpus implements Corpus, LuceneFileProvider<File>
 	}
 
 	@Override
-	public HashMap<String, Tag> getTags()
+	public Map<String, MyTag> getTags()
 	{
 		if(this.tags == null)
 		{

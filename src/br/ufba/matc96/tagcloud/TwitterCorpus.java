@@ -7,8 +7,8 @@ package br.ufba.matc96.tagcloud;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +17,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import br.ufba.matc96.lucene.LuceneController;
 import br.ufba.matc96.lucene.LuceneFileProvider;
 import br.ufba.matc96.lucene.MyFile;
-import br.ufba.matc96.tagcloud.util.TwitterFinder;
+import br.ufba.matc96.tagcloud.util.TwitterProvider;
 import twitter4j.TwitterException;
 
 /**
@@ -29,8 +29,8 @@ public class TwitterCorpus implements Corpus, LuceneFileProvider<MyFile>
 {
 	private String twitterHandle;
 	private LuceneController luceneController;
-	private List<TagDocument> tagDocs;
-	private HashMap<String, Tag> tags;
+	private List<MyTagDocument> tagDocs;
+	private Map<String, MyTag> tags;
 	
 	public TwitterCorpus(String twitterHandle)
 	{
@@ -49,7 +49,7 @@ public class TwitterCorpus implements Corpus, LuceneFileProvider<MyFile>
 	}
 
 	@Override
-	public List<TagDocument> getTagDocuments()
+	public List<MyTagDocument> getTagDocuments()
 	{
 		if(this.tagDocs == null)
 		{
@@ -66,7 +66,7 @@ public class TwitterCorpus implements Corpus, LuceneFileProvider<MyFile>
 	}
 
 	@Override
-	public HashMap<String, Tag> getTags()
+	public Map<String, MyTag> getTags()
 	{
 		if(this.tags == null)
 		{
@@ -89,7 +89,7 @@ public class TwitterCorpus implements Corpus, LuceneFileProvider<MyFile>
 
         try
 		{
-        	TwitterFinder f = new TwitterFinder();
+        	TwitterProvider f = new TwitterProvider();
 			f.start(twitterHandle, 200);
 
 	        String regex = "(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
