@@ -82,7 +82,7 @@ public class SCTagCloudCreator implements TagCloudCreator
 		SymmetricTagMatrix affinityMatrix = new SymmetricTagMatrix();
 		for (Entry<Pair<String, String>, Float> entry : coMatrix.getMap().entrySet())
 		{
-			if(entry.getValue() > 2)
+			if(entry.getValue() > 3)
 			{
 				String tag1 = entry.getKey().getFirst();
 				String tag2 = entry.getKey().getSecond();

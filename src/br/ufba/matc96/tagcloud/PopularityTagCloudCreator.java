@@ -7,8 +7,8 @@ import java.util.List;
 
 public class PopularityTagCloudCreator implements TagCloudCreator
 {
-	Corpus corpus;
-	Integer nTags;
+	private Corpus corpus;
+	private Integer nTags;
 
 	public PopularityTagCloudCreator(Corpus corpus, Integer nTags)
 	{
@@ -38,6 +38,5 @@ public class PopularityTagCloudCreator implements TagCloudCreator
         {
         	return new TagCloud(tags);
         }
-        	
 	}
 }

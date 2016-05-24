@@ -56,4 +56,20 @@ public class TagCloud
 			this.clusters.put(key, new ArrayList<Tag>());
 		this.clusters.get(key).add(tag);
 	}
+	
+	public List<String> getDocs()
+	{
+        List<String> docstag = new ArrayList<>();
+        for(Tag tag: this.getAllTags())
+        {
+            for(String doc: tag.getDocs())
+            {
+                if(!docstag.contains(doc))
+                {
+                    docstag.add(doc);
+                }
+            }
+        }
+        return docstag;
+    }
 }
