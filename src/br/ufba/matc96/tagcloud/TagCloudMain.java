@@ -13,16 +13,15 @@ public class TagCloudMain
 {
 	public static void main(String[] args)
 	{
-		//Corpus corpus = new TwitterCorpus("bbcbrasil");
-		//Corpus corpus = new TextFileCorpus("test_data");
-		Corpus corpus = new BibsonomyCorpus("article");
+		Corpus corpus = new TwitterCorpus("bbcbrasil");
+		//Corpus corpus = new BibsonomyCorpus("health");
 
 		//Create tag cloud using spectral clustering
-		TagCloudCreator SCCreator = new SCTagCloudCreator(corpus, 10, 5);
+		TagCloudCreator SCCreator = new SCTagCloudCreator(corpus, 5, 20);
 		TagCloud SCTagCloud = SCCreator.create();
 		
 		//Create tag cloud using tag popularity
-		TagCloudCreator PCreator = new PopularityTagCloudCreator(corpus, 50);
+		TagCloudCreator PCreator = new PopularityTagCloudCreator(corpus, 100);
 		TagCloud PTagCloud = PCreator.create();
 
 		//Analyze tag clouds
