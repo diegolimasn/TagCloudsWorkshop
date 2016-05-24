@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -29,7 +28,6 @@ import org.apache.lucene.store.FSDirectory;
 
 import br.ufba.matc96.tagcloud.Tag;
 import br.ufba.matc96.tagcloud.TagDocument;
-import br.ufba.matc96.tagcloud.util.SymmetricTagMatrix;
 
 public class LuceneSearcher
 {
@@ -80,40 +78,6 @@ public class LuceneSearcher
 			tags.put(tagName,tag);
 		}
 		return tags;
-	}
-	
-	public SymmetricTagMatrix getCooccurrenceMatrix() throws IOException, ParseException
-	{
-		SymmetricTagMatrix matrix = new SymmetricTagMatrix();
-		for (int i=0; i<reader.maxDoc(); i++)
-		{
-			Document doc = reader.document(i);
-		    if (doc == null)
-		        continue;
-		    
-		    Terms terms = reader.getTermVector(i, LuceneConstants.CONTENTS);
-		    if (terms == null)
-		    	continue;
-
-		    TermsEnum termEnum = terms.iterator();
-		    List<String> tags = new LinkedList<String>();
-
-			while(termEnum.next() != null)
-			{
-				tags.add(termEnum.term().utf8ToString());
-			}
-		    
-			for(int j = 0; j < tags.size(); j++)
-			{
-				String t1 = tags.get(j);
-				for(int k = j+1; k < tags.size(); k++)
-				{
-					String t2 = tags.get(k);
-					matrix.increaseValue(t1, t2);
-				}
-			}
-		}
-		return matrix;
 	}
 	
 	public List<TagDocument> getTagDocuments() throws IOException

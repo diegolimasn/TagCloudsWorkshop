@@ -10,11 +10,8 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
-import br.ufba.matc96.tagcloud.Corpus;
 import br.ufba.matc96.tagcloud.Tag;
 import br.ufba.matc96.tagcloud.TagDocument;
-import br.ufba.matc96.tagcloud.util.SymmetricTagMatrix;
-import twitter4j.TwitterException;
 
 public class LuceneController
 {
@@ -50,11 +47,11 @@ public class LuceneController
 		}
 	}
 
-	public void createIndex(Corpus<?> corpus) throws IOException, TwitterException
+	public void createIndex(LuceneFileProvider<?> fileProvider) throws IOException
 	{
 		int numIndexed;
 		long startTime = System.currentTimeMillis();
-		numIndexed = indexer.createIndex(corpus);
+		numIndexed = indexer.createIndex(fileProvider);
 		long endTime = System.currentTimeMillis();
 		indexer.close();
 		//Sets up searcher
@@ -94,10 +91,5 @@ public class LuceneController
 	public List<TagDocument> getTagDocuments() throws IOException, ParseException
 	{
 		return this.searcher.getTagDocuments();
-	}
-	
-	public SymmetricTagMatrix getCooccurrenceMatrix() throws IOException, ParseException
-	{
-		return searcher.getCooccurrenceMatrix();
 	}
 }

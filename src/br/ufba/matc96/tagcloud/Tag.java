@@ -1,15 +1,8 @@
 package br.ufba.matc96.tagcloud;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.Terms;
-import org.apache.lucene.index.TermsEnum;
-
-import br.ufba.matc96.lucene.LuceneConstants;
 import br.ufba.matc96.tagcloud.util.SymmetricTagMatrix;
 
 public class Tag
@@ -90,13 +83,6 @@ public class Tag
         }
         return total;
     }
-    
-    /*public static SymmetricTagMatrix getCooccurrenceMatrix(HashMap<String,Tag> tags)
-    {
-    	tags.values()
-
-    	return matrix;
-    }*/
     
     public static SymmetricTagMatrix getCooccurrenceMatrix(List<TagDocument> docs)
     {

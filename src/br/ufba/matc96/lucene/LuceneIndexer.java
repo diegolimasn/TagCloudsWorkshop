@@ -20,9 +20,6 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import br.ufba.matc96.tagcloud.Corpus;
-import br.ufba.matc96.tagcloud.MyFile;
-
 public class LuceneIndexer
 {
 	private IndexWriter writer;
@@ -46,9 +43,9 @@ public class LuceneIndexer
 		writer.close();
 	}
 	
-	public <F> int createIndex(Corpus<F> corpus) throws IOException
+	public <F> int createIndex(LuceneFileProvider<F> fileProvider) throws IOException
 	{
-        F[] files = corpus.getFiles();
+        F[] files = fileProvider.getFiles();
 
         if(files instanceof MyFile[])
         {

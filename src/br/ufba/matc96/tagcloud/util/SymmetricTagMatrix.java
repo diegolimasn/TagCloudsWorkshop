@@ -7,18 +7,10 @@ import java.util.Map.Entry;
 
 public class SymmetricTagMatrix extends TagMatrix
 {
-	private HashMap<Pair<String, String>, Float> matrix;
-	private List<String> tags;
 	
 	public SymmetricTagMatrix()
 	{
-		matrix = new HashMap<Pair<String, String>, Float>();
-		tags = new ArrayList<String>();
-	}
-	
-	public HashMap<Pair<String, String>, Float> getMap()
-	{
-		return this.matrix;
+		super();
 	}
 	
 	public Float getValue(String tag1, String tag2)
@@ -87,11 +79,6 @@ public class SymmetricTagMatrix extends TagMatrix
 		}
 	}
 	
-	public List<String> getTags()
-	{
-		return tags;
-	}
-	
 	public double[][] to2DArray()
 	{
 		double[][] m = new double[tags.size()][tags.size()];
@@ -119,44 +106,4 @@ public class SymmetricTagMatrix extends TagMatrix
 		
 		return m;
 	}
-	
-	public void printMatrix()
-	{
-		for (Entry<Pair<String, String>, Float> entry : this.matrix.entrySet())
-		{
-				System.out.println(entry.getKey() + "/" + entry.getValue());
-		}
-	}
-	
-	/*public void printMatrixToFile()
-	{
-		
-		PrintWriter writer;
-		try
-		{
-			writer = new PrintWriter("teste/teste.arff", "UTF-8");
-			writer.println("@relation cooccurrence\n");
-			writer.print("@attribute tag1 {");
-			writer.print(String.join(",", tags));
-			writer.println("}");
-			writer.print("@attribute tag2 {");
-			writer.print(String.join(",", tags));
-			writer.println("}");
-			writer.println("@attribute cooc real\n");
-			writer.println("@data");
-			for (Entry<Pair<String, String>, Float> entry : this.matrix.entrySet())
-			{
-				writer.println(entry.getKey().getKey() + "," + entry.getKey().getValue() + "," + entry.getValue());
-			}
-			writer.close();
-		} catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
 }

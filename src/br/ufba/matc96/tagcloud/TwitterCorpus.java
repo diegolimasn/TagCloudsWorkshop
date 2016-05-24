@@ -5,11 +5,19 @@
  */
 package br.ufba.matc96.tagcloud;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.lucene.queryparser.classic.ParseException;
+
+import br.ufba.matc96.lucene.LuceneController;
+import br.ufba.matc96.lucene.LuceneFileProvider;
+import br.ufba.matc96.lucene.MyFile;
+import br.ufba.matc96.tagcloud.util.TwitterFinder;
 import twitter4j.TwitterException;
 
 /**
@@ -17,13 +25,61 @@ import twitter4j.TwitterException;
  * @author felipe
  */
 
-public class TweetCorpus implements Corpus<MyFile>
+public class TwitterCorpus implements Corpus, LuceneFileProvider<MyFile>
 {
 	private String twitterHandle;
+	private LuceneController luceneController;
+	private List<TagDocument> tagDocs;
+	private HashMap<String, Tag> tags;
 	
-	public TweetCorpus(String twitterHandle)
+	public TwitterCorpus(String twitterHandle)
 	{
 		this.twitterHandle = twitterHandle;
+		this.luceneController = new LuceneController();
+		try
+		{
+			luceneController.createIndex(this);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		tagDocs = null;
+		tags = null;
+	}
+
+	@Override
+	public List<TagDocument> getTagDocuments()
+	{
+		if(this.tagDocs == null)
+		{
+			try
+			{
+				this.tagDocs = this.luceneController.getTagDocuments();
+			}
+			catch (IOException | ParseException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return tagDocs;
+	}
+
+	@Override
+	public HashMap<String, Tag> getTags()
+	{
+		if(this.tags == null)
+		{
+			try
+			{
+				this.tags = this.luceneController.getTags();
+			}
+			catch (IOException | ParseException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return this.tags;
 	}
 	
 	@Override
@@ -33,7 +89,7 @@ public class TweetCorpus implements Corpus<MyFile>
 
         try
 		{
-        	TweetFinder f = new TweetFinder();
+        	TwitterFinder f = new TwitterFinder();
 			f.start(twitterHandle, 200);
 
 	        String regex = "(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufba.matc96.tagcloud;
+package br.ufba.matc96.tagcloud.util;
 
 import java.util.ArrayList;
 import twitter4j.*;
@@ -14,14 +14,14 @@ import twitter4j.auth.AccessToken;
  *
  * @author felipe
  */
-public class TweetFinder {
+public class TwitterFinder {
     private List<String> texts;
     private final static String CONSUMER_KEY = "uNsb6FQluNPkKSj6ENJS2q7XS";
     private final static String CONSUMER_KEY_SECRET = "ZKf2sPcUsD7TAI8tz69iKgVGGP5vsWYtR1wi63zvstaIfYjjps";
     private final static String ACCESS_TOKEN = "15971498-SKuEW1ITeYVtRP6kBU6i4ZPiiBbBCYOmy4s6UUYox";
     private final static String ACCESS_TOKEN_SECRET = "6ImUSjY8MofvzmiKPCQ5i3D9IlSBVs8EZx9J8Di7GWq7z";
     
-    public TweetFinder()
+    public TwitterFinder()
     {
         texts = new ArrayList<>();
     }

@@ -10,8 +10,8 @@ import edu.ucla.sspace.matrix.Matrix;
 
 public class TagMatrix
 {
-	private HashMap<Pair<String, String>, Float> matrix;
-	private List<String> tags;
+	protected HashMap<Pair<String, String>, Float> matrix;
+	protected List<String> tags;
 	
 	public TagMatrix()
 	{
@@ -72,14 +72,6 @@ public class TagMatrix
 		return tags;
 	}
 	
-	public void printMatrix()
-	{
-		for (Entry<Pair<String, String>, Float> entry : this.matrix.entrySet())
-		{
-				System.out.println(entry.getKey() + "/" + entry.getValue());
-		}
-	}
-	
 	public Matrix toMatrix()
 	{
 		Matrix m = new ArrayMatrix(this.to2DArray());
@@ -109,4 +101,44 @@ public class TagMatrix
 		
 		return m;
 	}
+	
+	public void printMatrix()
+	{
+		for (Entry<Pair<String, String>, Float> entry : this.matrix.entrySet())
+		{
+				System.out.println(entry.getKey() + "/" + entry.getValue());
+		}
+	}
+
+	/*public void printMatrixToFile()
+	{
+		
+		PrintWriter writer;
+		try
+		{
+			writer = new PrintWriter("teste/teste.arff", "UTF-8");
+			writer.println("@relation cooccurrence\n");
+			writer.print("@attribute tag1 {");
+			writer.print(String.join(",", tags));
+			writer.println("}");
+			writer.print("@attribute tag2 {");
+			writer.print(String.join(",", tags));
+			writer.println("}");
+			writer.println("@attribute cooc real\n");
+			writer.println("@data");
+			for (Entry<Pair<String, String>, Float> entry : this.matrix.entrySet())
+			{
+				writer.println(entry.getKey().getKey() + "," + entry.getKey().getValue() + "," + entry.getValue());
+			}
+			writer.close();
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}*/
 }
