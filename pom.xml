@@ -5,6 +5,88 @@
 		http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>br.ufba</groupId>
-  <artifactId>tag-cloud-workshop</artifactId>
+  <artifactId>tag-cloud</artifactId>
   <version>1.0</version>
+
+  <properties>
+    <!--<maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>-->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>bibsonomy-repo</id>
+      <name>Releases von BibSonomy-Modulen</name>
+      <url>http://dev.bibsonomy.org/maven2/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+      <version>6.4.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-queryparser</artifactId>
+      <version>6.4.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.twitter4j</groupId>
+      <artifactId>twitter4j-core</artifactId>
+      <version>4.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bibsonomy</groupId>
+      <artifactId>bibsonomy-rest-client</artifactId>
+      <version>3.7.2</version>
+    </dependency>
+
+    <!-- LOCAL JAR FILES (SSPACE has an error in its original distribution) -->
+
+    <!-- <dependency>
+      <groupId>edu.ucla.sspace</groupId>
+      <artifactId>sspace</artifactId>
+      <version>2.0.4</version>
+    </dependency> -->
+    <dependency>
+      <groupId>edu.ucla.sspace</groupId>
+      <artifactId>sspace</artifactId>
+      <version>2.0.4</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/sspace-2.0.4.jar</systemPath>
+	</dependency>
+    <dependency>
+      <groupId>trove</groupId>
+      <artifactId>trove</artifactId>
+      <version>3.1a1</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/trove-3.1a1.jar</systemPath>
+	</dependency>
+    
+    <!-- TEST DEPENDENCIES -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
