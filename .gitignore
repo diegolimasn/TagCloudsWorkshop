@@ -1,5 +1,3 @@
-!.gitkeep
-
 # Maven files
 target/
 pom.xml.tag
@@ -17,6 +15,8 @@ buildNumber.properties
 # Eclipse files
 .settings
 .classpath
+/bin
 
 # Index folder
 /index/*
+!/index/.gitkeep
