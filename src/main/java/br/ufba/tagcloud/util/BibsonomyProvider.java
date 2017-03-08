@@ -22,6 +22,7 @@ public class BibsonomyProvider
 	
 	public List<Post<?>> getPosts(String searchTerm)
 	{
+		BibSonomyOAuthAccesssor accessor = new BibSonomyOAuthAccesssor("<YOUR CONSUMER KEY>", "<YOUR CONSUMER SECRET>", "<YOUR CALLBACK URL>");
 		Bibsonomy bib = new Bibsonomy(USERNAME, API_KEY);
 		bib.setApiURL("http://www.bibsonomy.org/api");
 		List<String> searchSet = new ArrayList<String>();

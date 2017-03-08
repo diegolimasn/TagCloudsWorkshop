@@ -15,6 +15,7 @@ buildNumber.properties
 # Eclipse files
 .settings
 .classpath
+.project
 /bin
 
 # Index folder
