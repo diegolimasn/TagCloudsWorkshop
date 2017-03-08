@@ -14,7 +14,6 @@ public class TagCloudMain
 	public static void main(String[] args)
 	{
 		Corpus corpus = new TwitterCorpus("bbcbrasil");
-		//Corpus corpus = new BibsonomyCorpus("health");
 
 		//Create tag cloud using spectral clustering
 		TagCloudCreator SCCreator = new SCTagCloudCreator(corpus, 5, 20);
