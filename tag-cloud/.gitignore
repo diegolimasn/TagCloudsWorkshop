@@ -17,3 +17,7 @@ buildNumber.properties
 .classpath
 .project
 /bin
+
+# Index folder
+/index/*
+!/index/.gitkeep
